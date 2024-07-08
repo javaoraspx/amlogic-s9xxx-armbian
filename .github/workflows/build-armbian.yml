@@ -73,7 +73,7 @@ on:
       builder_name:
         description: "Set Armbian builder signature."
         required: false
-        default: "hiasia"
+        default: "hello"
         type: choice
         options:
           - ophub
