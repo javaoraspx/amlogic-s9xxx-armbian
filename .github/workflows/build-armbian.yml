@@ -162,17 +162,7 @@ on:
         default: "6.1.57"
         type: choice
         options:
-          - 5.10.160_6.1.43
-          - 6.1.25
           - 6.1.57
-          - 5.4.y
-          - 5.10.y
-          - 5.15.y
-          - 6.1.y
-          - 6.6.y
-          - 6.1.y_6.6.y
-          - 6.1.y_5.15.y
-          - 5.4.y_5.10.y
       auto_kernel:
         description: "Auto use the latest kernel."
         required: false
@@ -181,11 +171,12 @@ on:
       kernel_repo:
         description: "Set the kernel repository."
         required: false
-        default: "hellotheasia/kernel"
+        default: "javaoraspx/kernel"
         type: choice
         options:
           - ophub/kernel
           - hellotheasia/kernel
+          - javaoraspx/kernel
       kernel_usage:
         description: "Set the tags of the stable kernel."
         required: false
@@ -193,11 +184,6 @@ on:
         type: choice
         options:
           - rk35xx
-          - rk3588
-          - stable
-          - flippy
-          - dev
-          - beta
       armbian_fstype:
         description: "Select armbian rootfs type."
         required: false
@@ -223,6 +209,7 @@ on:
           - ophub
           - angel
           - hiasia
+          - hello
 
 env:
   TZ: Asia/Shanghai
@@ -285,7 +272,7 @@ jobs:
           df -hT ${PWD}
           git clone -q --single-branch --depth=1 --branch=main https://github.com/armbian/build.git build
           ln -sf /builder/build ${GITHUB_WORKSPACE}/build
-          ln -sf /builder/build /home/runner/work/_actions/hellotheasia/amlogic-s9xxx-armbian/main/build
+          ln -sf /builder/build /home/runner/work/_actions/javaoraspx/amlogic-s9xxx-armbian/main/build
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Compile Armbian [ ${{ inputs.set_release }} ]
@@ -323,7 +310,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
 
       - name: Rebuild Armbian
-        uses: hellotheasia/amlogic-s9xxx-armbian@main
+        uses: javaoraspx/amlogic-s9xxx-armbian@main
         if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
         with:
           build_target: armbian
